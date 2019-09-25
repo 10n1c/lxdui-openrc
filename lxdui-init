@@ -1,0 +1,24 @@
+#!/sbin/openrc-run
+#
+# OpenRC service script for LXDUI
+#
+
+CMD="/usr/bin/lxdui"
+PIDFILE="/var/run/lxdui/lxdui.pid"
+
+depend() {
+    need lxd
+    provide lxdui
+}
+
+start() {
+  ebegin "Starting ${RC_SVCNAME}"
+  start-stop-daemon -x ${CMD} -p ${PIDFILE} -P -b -- "start"
+  eend $?
+}
+
+stop() {
+  ebegin "Stopping ${RC_SVCNAME}"
+  start-stop-daemon -x ${CMD} -- "stop"
+  eend $?
+}
